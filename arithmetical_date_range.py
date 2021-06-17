@@ -7,8 +7,9 @@ class ArithmeticalDateRange:
     Date Range which can do arithmetic (addition and subtraction).
 
     Usage:
-    # Subtraction
 
+    Example - Subtraction
+    ---------------------
     >>> from datetime import datetime
     >>> from arithmetical_date_range import ArithmeticalDateRange
 
@@ -18,8 +19,8 @@ class ArithmeticalDateRange:
     >>> a1 - a2
     ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-02 00:00:00)
 
-    # Addition
-    ```python
+    Example - Addition
+    ------------------
     >>> from datetime import datetime
     >>> from arithmetical_date_range import ArithmeticalDateRange
 
