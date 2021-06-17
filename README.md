@@ -12,6 +12,7 @@
 
 >>> a1 - a2
 ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-02 00:00:00)
+
 ```
 
 #### Addition
@@ -24,4 +25,5 @@ ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-02 00:00:00)
 
 >>> a1 + a2
 ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-04 00:00:00)
+
 ```
