@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arithmetical-date-range"
-version = "0.1.0"
+version = "0.1.1"
 description = "Add an subtract date ranges"
 authors = ["Your Name <you@example.com>"]
 
