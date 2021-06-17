@@ -54,13 +54,9 @@ class ArithmeticalDateRange:
                 end = other.start
                 return ArithmeticalDateRange(start, end)
             if other.end < self.end:
-                start1 = self.start
-                end1 = other.start
-                start2 = other.end
-                end2 = self.end
                 return [
-                    ArithmeticalDateRange(start=start1, end=end1),
-                    ArithmeticalDateRange(start=start2, end=end2),
+                    ArithmeticalDateRange(start=self.start, end=other.start),
+                    ArithmeticalDateRange(start=other.end, end=self.end),
                 ]
         if self.start >= other.start:
             if other.end > self.end:
