@@ -3,8 +3,6 @@ name: Build
 on:
   push:
     branches: [ main ]
-    tags:
-      - v*
   pull_request:
     branches: [ main ]
 
@@ -14,16 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
+
     - name: Install and set up poetry
       run: |
         python -m pip install --upgrade pip
         python -m pip install poetry
         poetry config virtualenvs.in-project true
+
     - name: Cache
       uses: actions/cache@v2.1.6
       with:
@@ -33,18 +35,23 @@ jobs:
           /usr/local/bin
           /usr/local/lib/python3.8/site-packages
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
     - name: Install dependencies
       run: |
         poetry install
+
     - name: Black check
       run: |
         poetry run black --check .
+
     - name: Test with pytest
       run: |
         poetry run pytest .
+
     - name: Test with mypy
       run: |
         poetry run mypy .
+
     - name: Publish to TestPyPi
       env:
         PYPI_API_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
@@ -55,11 +62,3 @@ jobs:
         poetry config pypi-token.testpypi $PYPI_API_TOKEN
         poetry config repositories.testpypi https://test.pypi.org/legacy/
         poetry publish -r testpypi
-    - name: Publish to PyPi
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-      env:
-        PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-      run: |
-        poetry build
-        poetry config pypi-token.pypi $PYPI_API_TOKEN
-        poetry publish
