@@ -40,8 +40,17 @@ class ArithmeticalDateRange:
                 return ArithmeticalDateRange(other.end, self.end)
         raise ValueError("An unknown error occured")
 
-    def __add__(self, other):
-        raise NotImplementedError
+    def __add__(self, other: "ArithmeticalDateRange") -> "ArithmeticalDateRange":
+        if other.start <= self.start and other.end >= self.end:
+            return other
+        if other.start > self.start and other.end < self.end:
+            return self
+        if other.start <= self.start and other.end < self.end:
+            return ArithmeticalDateRange(start=other.start, end=self.end)
+        if other.start > self.start and other.end >= self.end:
+            return ArithmeticalDateRange(start=self.start, end=other.end)
+
+        raise ValueError("An unknown error occured")
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, ArithmeticalDateRange):
