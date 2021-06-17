@@ -19,12 +19,12 @@ class ArithmeticalDateRange:
         if self.end < other.start:
             return self
 
-        if other.start >= self.start:
+        if other.start > self.start:
             start = self.start
             if other.end >= self.end:
                 end = other.start
                 return ArithmeticalDateRange(start, end)
-            if other.end <= self.end:
+            if other.end < self.end:
                 start1 = self.start
                 end1 = other.start
                 start2 = other.end

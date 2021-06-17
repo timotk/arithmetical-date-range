@@ -3,7 +3,7 @@ from datetime import datetime
 from arithmetical_date_range import ArithmeticalDateRange
 
 
-def test_multi_date_range_other_end_is_greater():
+def test_subtract_other_end_is_greater():
     m1 = ArithmeticalDateRange(
         start=datetime(2021, 1, 1),
         end=datetime(2021, 3, 1),
@@ -20,13 +20,13 @@ def test_multi_date_range_other_end_is_greater():
     assert m1 - m2 == expected
 
 
-def test_multi_date_range_other_is_larger_than_complete_range():
+def test_subtract_other_is_larger_than_complete_range():
     m1 = ArithmeticalDateRange(
-        start=datetime(2021, 1, 1),
+        start=datetime(2021, 2, 1),
         end=datetime(2021, 3, 1),
     )
     m2 = ArithmeticalDateRange(
-        start=datetime(2020, 1, 1),
+        start=datetime(2021, 1, 1),
         end=datetime(2021, 4, 1),
     )
     expected = None
@@ -34,7 +34,7 @@ def test_multi_date_range_other_is_larger_than_complete_range():
     assert m1 - m2 == expected
 
 
-def test_multi_date_range_other_start_is_smaller():
+def test_subtract_other_start_is_smaller():
     m1 = ArithmeticalDateRange(
         start=datetime(2021, 2, 1),
         end=datetime(2021, 4, 1),
@@ -51,7 +51,7 @@ def test_multi_date_range_other_start_is_smaller():
     assert m1 - m2 == expected
 
 
-def test_multi_date_range_other_is_contained():
+def test_subtract_other_is_contained():
     m1 = ArithmeticalDateRange(
         start=datetime(2021, 1, 1),
         end=datetime(2021, 4, 1),
