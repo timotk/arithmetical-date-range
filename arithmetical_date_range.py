@@ -6,30 +6,54 @@ class ArithmeticalDateRange:
     """
     Date Range which can do arithmetic (addition and subtraction).
 
-    Usage:
-
     Example - Subtraction
     ---------------------
     >>> from datetime import datetime
     >>> from arithmetical_date_range import ArithmeticalDateRange
 
-    >>> a1 = ArithmeticalDateRange(start=datetime(2021, 1, 1), end=datetime(2021, 1, 3))
-    >>> a2 = ArithmeticalDateRange(start=datetime(2021, 1, 2), end=datetime(2021, 1, 4))
+    >>> a = ArithmeticalDateRange(start=datetime(2021, 1, 1), end=datetime(2021, 1, 3))
+    >>> b = ArithmeticalDateRange(start=datetime(2021, 1, 2), end=datetime(2021, 1, 4))
 
-    >>> a1 - a2
+    >>> a - b
     ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-02 00:00:00)
+
 
     Example - Addition
     ------------------
     >>> from datetime import datetime
     >>> from arithmetical_date_range import ArithmeticalDateRange
 
-    >>> a1 = ArithmeticalDateRange(start=datetime(2021, 1, 1), end=datetime(2021, 1, 3))
-    >>> a2 = ArithmeticalDateRange(start=datetime(2021, 1, 2), end=datetime(2021, 1, 4))
+    >>> a = ArithmeticalDateRange(start=datetime(2021, 1, 1), end=datetime(2021, 1, 3))
+    >>> b = ArithmeticalDateRange(start=datetime(2021, 1, 2), end=datetime(2021, 1, 4))
 
-    >>> a1 + a2
+    >>> a + b
     ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-04 00:00:00)
 
+
+    Example - Addition of multiple date ranges
+    ------------------------------------------
+    >>> from datetime import datetime
+    >>> from arithmetical_date_range import ArithmeticalDateRange
+
+    >>> a = ArithmeticalDateRange(start=datetime(2021, 1, 2), end=datetime(2021, 1, 3))
+    >>> b1 = ArithmeticalDateRange(start=datetime(2021, 1, 1), end=datetime(2021, 1, 2))
+    >>> b2 = ArithmeticalDateRange(start=datetime(2021, 1, 3), end=datetime(2021, 1, 4))
+
+    >>> a + [b1, b2]
+    ArithmeticalDateRange(2021-01-01 00:00:00, 2021-01-04 00:00:00)
+
+
+    Example - Subtraction of multiple date ranges
+    ------------------------------------------
+    >>> from datetime import datetime
+    >>> from arithmetical_date_range import ArithmeticalDateRange
+
+    >>> a = ArithmeticalDateRange(start=datetime(2021, 1, 2), end=datetime(2021, 1, 3))
+    >>> b1 = ArithmeticalDateRange(start=datetime(2021, 1, 1), end=datetime(2021, 1, 2))
+    >>> b2 = ArithmeticalDateRange(start=datetime(2021, 1, 3), end=datetime(2021, 1, 4))
+
+    >>> a - [b1, b2]
+    ArithmeticalDateRange(2021-01-02 00:00:00, 2021-01-03 00:00:00)
     """
 
     def __init__(self, start: datetime, end: datetime) -> None:
@@ -42,6 +66,11 @@ class ArithmeticalDateRange:
     def __sub__(
         self, other: "ArithmeticalDateRange"
     ) -> Union["ArithmeticalDateRange", List["ArithmeticalDateRange"], None]:
+        if isinstance(other, list):
+            result = self
+            for adr in other:
+                result -= adr
+            return result
 
         if self.start > other.end:
             return self
@@ -49,10 +78,8 @@ class ArithmeticalDateRange:
             return self
 
         if other.start > self.start:
-            start = self.start
             if other.end >= self.end:
-                end = other.start
-                return ArithmeticalDateRange(start, end)
+                return ArithmeticalDateRange(self.start, other.start)
             if other.end < self.end:
                 return [
                     ArithmeticalDateRange(start=self.start, end=other.start),
@@ -65,7 +92,15 @@ class ArithmeticalDateRange:
                 return ArithmeticalDateRange(other.end, self.end)
         raise ValueError("An unknown error occured")
 
-    def __add__(self, other: "ArithmeticalDateRange") -> "ArithmeticalDateRange":
+    def __add__(
+        self, other: "ArithmeticalDateRange"
+    ) -> Union["ArithmeticalDateRange", List["ArithmeticalDateRange"]]:
+        if isinstance(other, list):
+            result = self
+            for adr in other:
+                result += adr
+            return result
+
         if other.start <= self.start and other.end >= self.end:
             return other
         if other.start > self.start and other.end < self.end:
